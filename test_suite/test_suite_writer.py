@@ -31,7 +31,7 @@ class TestSuiteWriterAgent(Runnable):
             }
         except Exception as e:
             return {
-                "function_name": function_name,
-                "test_filename": test_filename,
-                "status": f"error:
-            }
+            "function_name": function_name,
+            "test_filename": test_filename,
+            "status": f"error: {e}"
+            }   
