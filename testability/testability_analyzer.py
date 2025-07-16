@@ -1,4 +1,4 @@
-from langchain_core.runnables import Runnable
+from .utils import *
 from utils.code_parser import split_functions, extract_function_signature
 
 import re

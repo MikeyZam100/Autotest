@@ -1,4 +1,4 @@
-from .test_suite_utils import *
+from .utils import *
 
 
 class TestSuiteCleanerAgent(Runnable):

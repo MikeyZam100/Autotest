@@ -1,7 +1,4 @@
-import os
-from langchain.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
-from langchain_core.runnables import Runnable, RunnableLambda
+from .utils import *
 
 PROMPT_PATH = os.path.join(os.path.dirname(__file__), "..", "prompts", "test_suite_gen_prompt.txt")
 with open(PROMPT_PATH, "r", encoding="utf-8") as f:

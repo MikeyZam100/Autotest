@@ -1,4 +1,4 @@
-from .test_suite_utils import *
+from .utils import *
 from .test_suite_gen import TestSuiteGenAgent
 from .test_suite_cleaner import TestSuiteCleanerAgent
 from .test_suite_writer import TestSuiteWriterAgent
