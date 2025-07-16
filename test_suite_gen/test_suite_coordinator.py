@@ -85,6 +85,15 @@ class TestSuiteCoordinatorAgent(Runnable):
                             "test_filename": test_filename
                         })
                         continue
+                
+                print("📦 Sending to TestSuiteGenAgent:")
+                print("  - function_name:", function_name)
+                print("  - signature:", function_signature)
+                print("  - import_path:", import_path)
+                print("  - source_filename:", source_filename)
+                print("  - test_filename:", test_filename)
+                print("  - code:\n", code[:200] + ("..." if len(code) > 200 else ""))
+
 
                 # Step 1: Generate raw test suite
                 gen_result = gen_agent.invoke({

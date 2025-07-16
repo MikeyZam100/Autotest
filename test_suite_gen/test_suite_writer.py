@@ -22,8 +22,8 @@ class TestSuiteWriterAgent(Runnable):
             test_dir = os.path.dirname(test_filename)
             if test_dir:
                 os.makedirs(test_dir, exist_ok=True)
-            with open(test_filename, "w", encoding="utf-8") as f:
-                f.write(test_code)
+            with open(test_filename, "a", encoding="utf-8") as f:
+                f.write("\n\n" + test_code.strip())
             return {
                 "function_name": function_name,
                 "test_filename": test_filename,

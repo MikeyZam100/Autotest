@@ -109,3 +109,5 @@ class TestSuiteCleanerAgent(Runnable):
             return {"cleaned_test_code": placeholder, "status": "placeholder"}
 
         return {"cleaned_test_code": cleaned_code,}
+    
+        print("🧪 FULL cleaned test code:\n", cleaned_test_code)

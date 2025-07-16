@@ -1,9 +1,12 @@
 from .utils import *
+from utils.code_extractor import extract_test_code
 
+# Load test suite generation prompt
 PROMPT_PATH = os.path.join(os.path.dirname(__file__), "..", "prompts", "test_suite_gen_prompt.txt")
 with open(PROMPT_PATH, "r", encoding="utf-8") as f:
     test_suite_prompt = f.read()
 
+# Format the prompt template for the LLM
 test_suite_prompt_template = PromptTemplate(
     input_variables=[
         "function_signature",
@@ -14,6 +17,7 @@ test_suite_prompt_template = PromptTemplate(
     template=test_suite_prompt
 )
 
+# Set up the LLM
 llm = ChatOpenAI(
     model="gpt-3.5-turbo-0125",
     temperature=0,
@@ -27,7 +31,7 @@ class TestSuiteGenAgent(Runnable):
     """
 
     def __init__(self):
-        self.chain = test_suite_prompt_template | llm | RunnableLambda(lambda x: {"test_suite": x, "status": "generated"})
+        self.chain = test_suite_prompt_template | llm
 
     def invoke(self, input_dict: dict) -> dict:
         # Validate required inputs
@@ -45,10 +49,25 @@ class TestSuiteGenAgent(Runnable):
         }
 
         # Run the LLM chain
-        llm_response = self.chain.invoke(prompt_input)
+        llm_message = self.chain.invoke(prompt_input)
 
-        # Return structured output
+        # Handle raw string return from LLM
+        if hasattr(llm_message, 'content'):
+            raw_content = llm_message.content.strip()
+        else:
+            raw_content = str(llm_message).strip()
+
+        # Remove markdown code fences
+        if raw_content.startswith("```"):
+            raw_content = re.sub(r"^```(?:\w+)?\n", "", raw_content)
+            raw_content = re.sub(r"\n```$", "", raw_content)
+
+        # Debug print
+        print("🧪 Cleaned test code preview:\n", raw_content[:300])  # print first 300 chars for sanity
+
+        # Return structured result
         return {
-            "test_suite": llm_response.get("test_suite", ""),
-            "status": llm_response.get("status", "generated")
+            "test_suite": raw_content,
+            "status": "generated"
         }
+
